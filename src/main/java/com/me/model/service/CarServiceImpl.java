@@ -49,6 +49,9 @@ public class CarServiceImpl implements GenericService<Car> {
         /*try (CarRepo repository = new CarRepo()) {
             return  repository.selectAll();
         }*/
+
     return null;
     }
+
+
 }

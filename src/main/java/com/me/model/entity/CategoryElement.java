@@ -4,21 +4,22 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
 
-@Entity(name = "categoryElement")
+@Entity
 @Table(name = "category_element")
+@SequenceGenerator(name="categoryElement_generator",sequenceName = "categoryElement_seq")
 public class CategoryElement {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE , generator = "categoryElement_generator")
     @Column(columnDefinition = "int", name = "category_element_id" )
     private int categoryElementId;
     @Column(columnDefinition = "varchar(100)", name = "farsi_name",nullable = false)
     private String farsiName;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany(mappedBy = "categoryElement")
+  /*  @OneToMany(mappedBy = "categoryElement")
     private List<Employee> employeeList;
 
    @ManyToMany(mappedBy = "categoryElements")
@@ -40,7 +41,7 @@ public class CategoryElement {
     public CategoryElement setEmployeeList(List<Employee> employeeList) {
         this.employeeList = employeeList;
         return this;
-    }
+    }*/
 
     public int getCategoryElementId() {
         return categoryElementId;

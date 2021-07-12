@@ -6,9 +6,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "employee")
+@SequenceGenerator(initialValue = 1, name = "employee_generator",sequenceName = "employee_seq")
 public class Employee {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE,generator = "employee_generator")
     @Column(columnDefinition = "int" ,name = "employee_id")
     private  int employeeId;
     @Column(columnDefinition = "varchar(100)",name = "first_name" ,nullable =false )
@@ -17,16 +18,16 @@ public class Employee {
     private String lastName;
     @Column(columnDefinition = "varchar(30)",name = "national_code" ,nullable =false, unique = true)
     private String nationalCode;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "manager_id")
     Employee manager;
-
-    @OneToMany(mappedBy = "manager")
-    List<Employee> employeeList;
-
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "role_id")
     private CategoryElement categoryElement;
+
+
+    /*@OneToMany(mappedBy = "manager")
+    List<Employee> employeeList;
 
     @OneToMany(mappedBy = "senderID")
     private List<Email> sentEmailList;
@@ -62,7 +63,7 @@ public class Employee {
         this.sentEmailList = sentEmailList;
         return this;
     }
-
+*/
     public CategoryElement getCategoryElement() {
         return categoryElement;
     }
@@ -117,14 +118,14 @@ public class Employee {
         return this;
     }
 
-    public List<Employee> getEmployeeList() {
+   /* public List<Employee> getEmployeeList() {
         return employeeList;
     }
 
     public Employee setEmployeeList(List<Employee> employeeList) {
         this.employeeList = employeeList;
         return this;
-    }
+    }*/
 
 
     @Override
@@ -135,7 +136,6 @@ public class Employee {
                 ", lastName='" + lastName + '\'' +
                 ", nationalCode='" + nationalCode + '\'' +
                 ", manager=" + manager +
-                ", employeeList=" + employeeList +
                 '}';
     }
 }

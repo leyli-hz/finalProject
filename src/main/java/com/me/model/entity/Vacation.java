@@ -1,32 +1,93 @@
+
 package com.me.model.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Time;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity(name = "vacation")
 @Table(name = "vacation")
+@SequenceGenerator(name = "vacation_generator", sequenceName = "vacation_seq")
 public class Vacation {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition = "int" , name = "vacation_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vacation_generator")
+    @Column(columnDefinition = "int", name = "vacation_id")
     private int vacationId;
 
-    @Column(columnDefinition = "varchar(50)" , name = "duration",nullable = false)
-    private String duration;
+    @Column(columnDefinition = "varchar(150)", name = "expression")
+    private String expression;
 
-    @Column(columnDefinition = "date" , name = "day",nullable = false)
-    private Date date;
+    @Column(columnDefinition = "Time", name = "start_time", nullable = false)
+    private Time startTime;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "vacation_employee" ,joinColumns = {@JoinColumn(name="vacation_id")},
-    inverseJoinColumns = {@JoinColumn(name="employee_id")})
-    private Set<Employee> employees;
+    @Column(columnDefinition = "Time", name = "end_time", nullable = false)
+    private Time endTime;
 
-    @ManyToMany(cascade =CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinTable(name ="vacation_categoryElement" ,joinColumns = {@JoinColumn(name ="vacation_id")}
-    ,inverseJoinColumns = {@JoinColumn(name = "categoryElement_id")})
-    private Set<CategoryElement> categoryElements;
+    @Column(columnDefinition = "date", name = "start_day", nullable = false)
+    private Date startDate;
+
+    @Column(columnDefinition = "date", name = "end_day", nullable = false)
+    private Date endDate;
+
+/*    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "vacation_employee", joinColumns = {@JoinColumn(name = "vacation_id")},
+            inverseJoinColumns = {@JoinColumn(name = "employee_id")})
+    private Set<Employee> employees;*/
+    /* public Set<Employee> getEmployees() {
+        return employees;
+    }
+
+    public Vacation setEmployees(Set<Employee> employees) {
+        this.employees = employees;
+        return this;
+    }*/
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "vacation_categoryElement", joinColumns = {@JoinColumn(name = "vacation_id")}
+            , inverseJoinColumns = {@JoinColumn(name = "categoryElement_id")})
+    @OrderBy
+    private Set<CategoryElement> categoryElements = new LinkedHashSet<>();
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public Vacation setEmployee(Employee employee) {
+        this.employee = employee;
+        return this;
+    }
+
+    public String getExpression() {
+        return expression;
+    }
+
+    public Vacation setExpression(String expression) {
+        this.expression = expression;
+        return this;
+    }
+
+    public Time getEndTime() {
+        return endTime;
+    }
+
+    public Vacation setEndTime(Time endTime) {
+        this.endTime = endTime;
+        return this;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public Vacation setEndDate(Date endDate) {
+        this.endDate = endDate;
+        return this;
+    }
 
     public Set<CategoryElement> getCategoryElements() {
         return categoryElements;
@@ -37,14 +98,7 @@ public class Vacation {
         return this;
     }
 
-    public Set<Employee> getEmployees() {
-        return employees;
-    }
 
-    public Vacation setEmployees(Set<Employee> employees) {
-        this.employees = employees;
-        return this;
-    }
 
     public int getVacationId() {
         return vacationId;
@@ -55,21 +109,21 @@ public class Vacation {
         return this;
     }
 
-    public String getDuration() {
-        return duration;
+    public Time getStartTime() {
+        return startTime;
     }
 
-    public Vacation setDuration(String duration) {
-        this.duration = duration;
+    public Vacation setStartTime(Time startTime) {
+        this.startTime = startTime;
         return this;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public Vacation setDate(Date date) {
-        this.date = date;
+    public Vacation setStartDate(Date startDate) {
+        this.startDate = startDate;
         return this;
     }
 
@@ -77,8 +131,12 @@ public class Vacation {
     public String toString() {
         return "Vacation{" +
                 "vacationId=" + vacationId +
-                ", duration='" + duration + '\'' +
-                ", date=" + date +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
                 '}';
     }
 }
+
+

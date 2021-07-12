@@ -5,9 +5,11 @@ import java.util.List;
 
 @Entity(name = "category")
 @Table(name = "category")
+@SequenceGenerator(initialValue = 1 ,name="category_generator",sequenceName = "category_seq")
+
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE , generator ="category_generator")
     @Column(columnDefinition = "int" , name = "category_id")
     private int categoryId;
 
@@ -26,6 +28,9 @@ public class Category {
         return this;
     }
 */
+
+    public Category() {
+    }
 
     public String getCategoryName() {
         return categoryName;

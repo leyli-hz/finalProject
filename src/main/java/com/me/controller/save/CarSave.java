@@ -1,4 +1,4 @@
-package com.me.controller;
+package com.me.controller.save;
 
 import com.me.model.entity.Car;
 import com.me.model.service.CarServiceImpl;
